@@ -44,7 +44,7 @@ const initDB = async () => {
       gender ENUM('male', 'female', 'other') NOT NULL,
       birthday DATETIME,
       avatar VARCHAR(200),
-      rol ENUM('regular', 'admin') NOT NULL,
+      role ENUM('regular', 'admin') NOT NULL,
       password VARCHAR(200) NOT NULL,
       registrationCode VARCHAR(100),
       recoverCode VARCHAR(100),
@@ -103,7 +103,7 @@ const initDB = async () => {
 
     console.log("Tables created");
 
-    await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,rol,password,active) VALUES
+    await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,role,password,active) VALUES
     ('hatashi199','alejandromf_199@hotmail.com','Alejandro','Mariño','Fandiño',null,'male','1995-08-15',null,'admin',SHA2('${ADMIN_PASSWORD}', 512),true)`);
 
     console.log("Admin user added");
@@ -123,13 +123,13 @@ const initDB = async () => {
         gender: faker.random.arrayElement(["male", "female", "other"]),
         birthday: format(sqlDate, "yyyy-MM-dd"),
         avatar: null,
-        rol: "regular",
+        role: "regular",
         password: GENERIC_PASSWORD,
         active: true,
       };
 
-      await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,rol,password,active) VALUES
-        ('${fakeData.username}','${fakeData.email}','${fakeData.name}','${fakeData.lastName1}','${fakeData.lastName2}','${fakeData.biography}','${fakeData.gender}','${fakeData.birthday}','${fakeData.avatar}','${fakeData.rol}',SHA2('${fakeData.password}',512),${fakeData.active});
+      await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,role,password,active) VALUES
+        ('${fakeData.username}','${fakeData.email}','${fakeData.name}','${fakeData.lastName1}','${fakeData.lastName2}','${fakeData.biography}','${fakeData.gender}','${fakeData.birthday}','${fakeData.avatar}','${fakeData.role}',SHA2('${fakeData.password}',512),${fakeData.active});
       `);
 
       console.log(`Regular user ${i} added`);
