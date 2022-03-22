@@ -42,14 +42,15 @@ const initDB = async () => {
       last_name_2 VARCHAR(80) NOT NULL,
       biography TEXT,
       gender ENUM('male', 'female', 'other') NOT NULL,
-      birthday DATETIME,
+      birthday DATE,
       avatar VARCHAR(200),
       role ENUM('regular', 'admin') NOT NULL,
       password VARCHAR(200) NOT NULL,
       registrationCode VARCHAR(100),
       recoverCode VARCHAR(100),
       deleted BOOLEAN DEFAULT 0,
-      active BOOLEAN DEFAULT 0
+      active BOOLEAN DEFAULT 0,
+      createdAt DATETIME
     );`);
 
     await connection.query(`CREATE TABLE anime_ratings (
@@ -103,15 +104,16 @@ const initDB = async () => {
 
     console.log("Tables created");
 
-    await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,role,password,active) VALUES
-    ('hatashi199','alejandromf_199@hotmail.com','Alejandro','Mariño','Fandiño',null,'male','1995-08-15',null,'admin',SHA2('${ADMIN_PASSWORD}', 512),true)`);
+    await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,role,password,active,createdAt) VALUES
+    ('hatashi199','alejandromf_199@hotmail.com','Alejandro','Mariño','Fandiño',null,'male','1995-08-15',null,'admin',SHA2('${ADMIN_PASSWORD}', 512),true,'${format(
+      new Date(),
+      "yyyy-MM-dd HH:mm:ss"
+    )}')`);
 
     console.log("Admin user added");
 
     for (let i = 1; i <= 10; i++) {
-      const sqlDate = new Date(
-        faker.date.between("1950-01-01T00:00:00Z", "2020-12-31T00:00:00Z")
-      );
+      const sqlDate = new Date(faker.date.between("1950-01-01", "2020-12-31"));
 
       const fakeData = {
         username: faker.internet.userName(),
@@ -123,13 +125,13 @@ const initDB = async () => {
         gender: faker.random.arrayElement(["male", "female", "other"]),
         birthday: format(sqlDate, "yyyy-MM-dd"),
         avatar: null,
-        role: "regular",
         password: GENERIC_PASSWORD,
         active: true,
+        createdAt: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
       };
 
-      await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,role,password,active) VALUES
-        ('${fakeData.username}','${fakeData.email}','${fakeData.name}','${fakeData.lastName1}','${fakeData.lastName2}','${fakeData.biography}','${fakeData.gender}','${fakeData.birthday}','${fakeData.avatar}','${fakeData.role}',SHA2('${fakeData.password}',512),${fakeData.active});
+      await connection.query(`INSERT INTO users (username, email,name,last_name_1,last_name_2,biography,gender,birthday,avatar,password,active,createdAt) VALUES
+        ('${fakeData.username}','${fakeData.email}','${fakeData.name}','${fakeData.lastName1}','${fakeData.lastName2}','${fakeData.biography}','${fakeData.gender}','${fakeData.birthday}','${fakeData.avatar}',SHA2('${fakeData.password}',512),${fakeData.active},'${fakeData.createdAt}');
       `);
 
       console.log(`Regular user ${i} added`);
