@@ -21,6 +21,10 @@ const {
   logIn,
   newUser,
   activateUser,
+  editUserInfo,
+  editUserEmail,
+  editUserAvatar,
+  editUserPassword,
 } = require("./controllers/users/index");
 
 // CONFIGURACION_NECESARIA
@@ -35,6 +39,10 @@ app.get("/users/:idUser", userExist, userAuth, getUser);
 app.post("/users/login", logIn);
 app.post("/users", newUser);
 app.put("/users/activate/:registrationCode", activateUser);
+app.put("/users/edit-info/:idUser", userExist, userAuth, editUserInfo);
+app.put("/users/edit-email/:idUser", userExist, userAuth, editUserEmail);
+app.put("/users/edit-avatar/:idUser", userExist, userAuth, editUserAvatar);
+app.put("/users/edit-pwd/:idUser", userExist, userAuth, editUserPassword);
 
 // MIDDLEWARE_DE_ERROR
 app.use((error, req, res, next) => {

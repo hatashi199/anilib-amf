@@ -23,7 +23,7 @@ const userAuth = async (req, res, next) => {
       tokenInfo = jwt.verify(authorization, SECRET_AUTH);
     } catch (error) {
       const errorToken = new Error("No valid Token");
-      errorToken.httpstatus = 401;
+      errorToken.httpStatus = 401;
       throw error;
     }
 

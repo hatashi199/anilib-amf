@@ -50,7 +50,8 @@ const initDB = async () => {
       recoverCode VARCHAR(100),
       deleted BOOLEAN DEFAULT 0,
       active BOOLEAN DEFAULT 0,
-      createdAt DATETIME
+      createdAt DATETIME,
+      modifiedAt DATETIME
     );`);
 
     await connection.query(`CREATE TABLE anime_ratings (
